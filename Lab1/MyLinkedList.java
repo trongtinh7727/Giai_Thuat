@@ -151,21 +151,6 @@ public class MyLinkedList<E> implements ListInterface<E> {
     return curr.getData();
   }
 
-  public void sort() {
-    Node<E> curr = head;
-    while (curr.getNext() != null) {
-      Node<E> pre = null;
-      Node<E> temp = head;
-      while (temp.getNext() != null) {
-        pre = temp;
-        temp = temp.getNext();
-        if ((int) pre.getData() > (int) temp.getData()) {
-          this.swapE(pre, temp);
-        }
-      }
-    }
-  }
-
   @Override
   public void print() {
     if (head != null) {
