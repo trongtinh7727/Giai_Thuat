@@ -11,7 +11,7 @@ public interface ListInterface<E> {
 
   public E removeAfter(Node<E> curr) throws NoSuchElementException;
 
-  // public E removeCurr(Node<E> curr) throws NoSuchElementException;
+  public E removeCurr(Node<E> curr) throws NoSuchElementException;
 
   public E removeLast() throws NoSuchElementException;
 

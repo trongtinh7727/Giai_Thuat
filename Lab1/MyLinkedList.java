@@ -74,30 +74,30 @@ public class MyLinkedList<E> implements ListInterface<E> {
     }
   }
 
-  // @Override
-  // public E removeCurr(Node<E> curr) {
-  //   if (curr == null) {
-  //     throw new NoSuchElementException(
-  //       "Can't remove element from an empty list"
-  //     );
-  //   } else {
-  //     if (head.getData() == curr.getData()) {
-  //       head.setNext(curr.getNext());
-  //       numNode--;
-  //       return head.getData();
-  //     }
-  //     Node<E> delNode = head;
-  //     while (delNode.getNext() != null) {
-  //       delNode = delNode.getNext();
-  //       if (delNode.getData() == curr.getData()) {
-  //         delNode.setNext(curr);
-  //         numNode--;
-  //         return delNode.getData();
-  //       }
-  //     }
-  //     throw new NoSuchElementException("No node to remove");
-  //   }
-  // }
+  @Override
+  public E removeCurr(Node<E> curr) {
+    Node<E> tmp = this.getHead();
+    if (curr == null) {
+      throw new NoSuchElementException(
+        "Can't remove element from an empty list"
+      );
+    } else {
+      if (tmp == curr) {
+        return this.removeFirst();
+      }
+      while (tmp.getNext() != curr && tmp.getNext() != null) {
+        tmp = tmp.getNext();
+      }
+      if (tmp.getNext() == null) {
+        throw new NoSuchElementException(
+          "Can't remove element from an empty list"
+        );
+      }
+      tmp.setNext(curr.getNext());
+      numNode--;
+    }
+    return tmp.getData();
+  }
 
   @Override
   public E removeLast() throws NoSuchElementException {
@@ -118,6 +118,51 @@ public class MyLinkedList<E> implements ListInterface<E> {
       preNode.setNext(delNode.getNext());
       numNode--;
       return delNode.getData();
+    }
+  }
+
+  public E getLast() {
+    Node<E> preNode = null;
+    Node<E> tmp = head;
+    while (tmp.getNext() != null) {
+      preNode = tmp;
+      tmp = tmp.getNext();
+    }
+    return tmp.getData();
+  }
+
+  public E reverse() {
+    this.addFirst(this.getLast());
+    this.removeLast();
+    Node<E> curr = this.getHead();
+    for (int i = 0; i < this.size(); i++) {
+      this.addAfter(curr, this.getLast());
+      this.removeLast();
+      curr = curr.getNext();
+    }
+    return this.getFirst();
+  }
+
+  public E swapE(Node<E> pre, Node<E> curr) {
+    Node<E> temp = curr.getNext();
+    pre.setNext(temp);
+    curr.setNext(temp.getNext());
+    temp.setNext(curr);
+    return curr.getData();
+  }
+
+  public void sort() {
+    Node<E> curr = head;
+    while (curr.getNext() != null) {
+      Node<E> pre = null;
+      Node<E> temp = head;
+      while (temp.getNext() != null) {
+        pre = temp;
+        temp = temp.getNext();
+        if ((int) pre.getData() > (int) temp.getData()) {
+          this.swapE(pre, temp);
+        }
+      }
     }
   }
 
