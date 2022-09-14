@@ -131,41 +131,6 @@ public class MyLinkedList<E> implements ListInterface<E> {
     return tmp.getData();
   }
 
-  public E reverse() {
-    this.addFirst(this.getLast());
-    this.removeLast();
-    Node<E> curr = this.getHead();
-    for (int i = 0; i < this.size(); i++) {
-      this.addAfter(curr, this.getLast());
-      this.removeLast();
-      curr = curr.getNext();
-    }
-    return this.getFirst();
-  }
-
-  public E swapE(Node<E> pre, Node<E> curr) {
-    Node<E> temp = curr.getNext();
-    pre.setNext(temp);
-    curr.setNext(temp.getNext());
-    temp.setNext(curr);
-    return curr.getData();
-  }
-
-  public void sort() {
-    Node<E> curr = head;
-    while (curr.getNext() != null) {
-      Node<E> pre = null;
-      Node<E> temp = head;
-      while (temp.getNext() != null) {
-        pre = temp;
-        temp = temp.getNext();
-        if ((int) pre.getData() > (int) temp.getData()) {
-          this.swapE(pre, temp);
-        }
-      }
-    }
-  }
-
   @Override
   public void print() {
     if (head != null) {
@@ -215,5 +180,141 @@ public class MyLinkedList<E> implements ListInterface<E> {
       tmp = tmp.getNext();
     }
     return false;
+  }
+
+  // ------------------------//
+
+  public int CountEven() {
+    int dem = 0;
+    Node<E> tmp = head;
+    if (tmp != null) {
+      while (tmp != null) {
+        if ((int) tmp.getData() % 2 == 0) {
+          dem++;
+        }
+        tmp = tmp.getNext();
+      }
+    }
+    return dem;
+  }
+
+  static boolean isPrime(int n) {
+    // Corner case
+    if (n <= 1) return false;
+
+    // Check from 2 to n-1
+    for (int i = 2; i < n; i++) if (n % i == 0) return false;
+
+    return true;
+  }
+
+  public int CountPrime() {
+    int dem = 0;
+    Node<E> tmp = head;
+    if (tmp != null) {
+      while (tmp != null) {
+        if (isPrime((int) (tmp.getData()))) {
+          dem++;
+        }
+        tmp = tmp.getNext();
+      }
+    }
+    return dem;
+  }
+
+  public E addBefore(E item) throws NoSuchElementException {
+    if (head == null) {
+      throw new NoSuchElementException("No even element");
+    } else if ((int) head.getData() % 2 == 0) {
+      addFirst(item);
+      return head.getData();
+    } else {
+      Node<E> preNode = null;
+      Node<E> currNode = head;
+      while (currNode.getNext() != null) {
+        if ((int) currNode.getData() % 2 == 0) {
+          preNode.setNext(new Node<E>(item, currNode));
+          numNode++;
+          return preNode.getNext().getData();
+        }
+        preNode = currNode;
+        currNode = currNode.getNext();
+      }
+      throw new NoSuchElementException("No even element");
+    }
+  }
+
+  public E maxValue() throws NoSuchElementException {
+    if (head == null) {
+      throw new NoSuchElementException("List is empty!");
+    } else {
+      Node<E> temp = head;
+      Node<E> max = head;
+
+      while (temp.getNext() != null) {
+        if ((int) temp.getData() > (int) max.getData()) {
+          max = temp;
+        }
+        temp = temp.getNext();
+      }
+      return max.getData();
+    }
+  }
+
+  public E reverse() {
+    this.addFirst(this.getLast());
+    this.removeLast();
+    Node<E> curr = this.getHead();
+    for (int i = 0; i < this.size(); i++) {
+      this.addAfter(curr, this.getLast());
+      this.removeLast();
+      curr = curr.getNext();
+    }
+    return this.getFirst();
+  }
+
+  public E swapE(Node<E> pre, Node<E> curr) {
+    if (pre == null) {
+      Node<E> tmp = curr.getNext();
+      head.setNext(tmp.getNext());
+      tmp.setNext(head);
+      head = tmp;
+      return curr.getData();
+    }
+    Node<E> temp = curr.getNext();
+    pre.setNext(temp);
+    curr.setNext(temp.getNext());
+    temp.setNext(curr);
+    return curr.getData();
+  }
+
+  public void sort() {
+    if (this.size() > 1) {
+      for (int i = 0; i < this.size(); i++) {
+        Node<E> pre = null;
+        Node<E> curr = head;
+        for (int j = 0; j < this.size() - i; j++) { //4
+          if (curr.getNext() == null) {
+            break;
+          }
+          boolean swap = false;
+          if ((int) curr.getData() > (int) curr.getNext().getData()) {
+            swapE(pre, curr);
+            swap = true;
+          }
+
+          if (!swap) {
+            pre = curr;
+            curr = curr.getNext();
+          } else {
+            if (pre != null) {
+              pre = pre.getNext();
+            } else {
+              pre = head;
+            }
+          }
+        }
+      }
+    }
   }
 }
