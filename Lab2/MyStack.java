@@ -1,4 +1,4 @@
-import java.util.*;
+import java.util.EmptyStackException;
 
 public class MyStack<E> implements StackInterface<E> {
 
@@ -7,39 +7,43 @@ public class MyStack<E> implements StackInterface<E> {
 
   public MyStack() {
     this.top = null;
-    this.numNode = 0;
+    numNode = 0;
   }
 
   @Override
   public void push(E item) {
-    this.top = new Node<E>(item, top);
-    numNode++;
-  }
-
-  @Override
-  public E pop() {
-    if (isEmpty() == true) {
-      return null;
+    if (isEmpty()) {
+      top = new Node<E>(item, null);
+      numNode++;
     } else {
-      Node<E> tmp = top;
-      top = top.getNext();
-      numNode--;
-      return tmp.getData();
+      Node<E> tmp = this.top;
+      this.top = new Node<E>(item, tmp);
+      numNode++;
     }
   }
 
   @Override
-  public int size() {
-    return numNode;
+  public E pop() throws EmptyStackException {
+    if (isEmpty()) {
+      throw new EmptyStackException();
+    }
+    Node<E> tmp = this.top;
+    this.top = tmp.getNext();
+    tmp.setNext(null);
+    numNode--;
+    return tmp.getElement();
   }
 
   @Override
-  public boolean contains(E item) {
-    Node<E> tmp = top;
-    while (tmp.getNext() != null) {
-      if (tmp.getData().equals(item)) {
-        return true;
-      }
+  public int size() {
+    return this.numNode;
+  }
+
+  @Override
+  public boolean containts(E item) {
+    Node<E> tmp = this.top;
+    while (tmp != null) {
+      if (tmp.getElement() == item) return true;
       tmp = tmp.getNext();
     }
     return false;
@@ -47,33 +51,41 @@ public class MyStack<E> implements StackInterface<E> {
 
   @Override
   public void print() {
-    if (top != null) {
-      Node<E> tmp = top;
-      System.out.print("Stack is: " + tmp.getData());
+    Node<E> tmp = this.top;
+    System.out.println("Stack:\n -> " + this.top.getElement());
+    tmp = tmp.getNext();
+    while (tmp != null) {
+      System.out.println(" -> " + tmp.getElement());
       tmp = tmp.getNext();
-      while (tmp != null) {
-        System.out.print("-> " + tmp.getData());
-        tmp = tmp.getNext();
-      }
-      System.out.println();
-    } else {
-      System.out.println("isEmpty...");
     }
   }
 
   @Override
   public boolean isEmpty() {
-    if (this.numNode == 0) {
-      return true;
-    }
+    if (this.top == null) return true;
     return false;
   }
 
   @Override
   public E getPeek() {
-    if (top == null) {
-      return null;
+    return this.top.getElement();
+  }
+
+  @Override
+  public double rescusive() {
+    if ((int) top.getElement() == 1) {
+      return 3;
     }
-    return top.getData();
+    double n = Double.valueOf((int) top.getElement());
+    return Math.pow(2, n) + (int) this.pop() * (int) this.pop() + rescusive();
+  }
+
+  public Node<E> setTail() {
+    Node<E> tmp = top;
+    while (tmp.getNext() != null) {
+      tmp = tmp.getNext();
+    }
+
+    return tmp;
   }
 }

@@ -1,41 +1,31 @@
 public class Fraction {
 
   private int number;
-  private int denmo;
+  private int denom;
 
   public Fraction() {
     this.number = 0;
-    this.denmo = 1;
+    this.denom = 1;
   }
 
   public Fraction(int x, int y) {
     this.number = x;
-    this.denmo = y;
+    this.denom = y;
   }
 
   public Fraction(Fraction f) {
+    this.denom = f.denom;
     this.number = f.number;
-    this.denmo = f.denmo;
   }
 
+  @Override
   public String toString() {
-    return String.format(
-      "Fraction[number: %d, denom: %d]",
-      this.number,
-      this.denmo
-    );
+    return String.format("%d/%d", this.number, this.denom);
   }
 
+  @Override
   public boolean equals(Object f) {
-    if (this == f) {
-      return true;
-    }
-    if (f instanceof Fraction) {
-      Fraction temp = (Fraction) f;
-      if (temp.number == this.number && temp.denmo == this.denmo) {
-        return true;
-      }
-    }
-    return false;
+    // TODO Auto-generated method stub
+    return super.equals(f);
   }
 }
