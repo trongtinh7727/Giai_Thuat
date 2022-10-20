@@ -273,47 +273,45 @@ public class MyLinkedList<E> implements ListInterface<E> {
     return this.getFirst();
   }
 
-  public E swapE(Node<E> pre, Node<E> curr) {
-    if (pre == null) {
-      Node<E> tmp = curr.getNext();
-      head.setNext(tmp.getNext());
-      tmp.setNext(head);
-      head = tmp;
-      return curr.getData();
-    }
-    Node<E> temp = curr.getNext();
-    pre.setNext(temp);
-    curr.setNext(temp.getNext());
-    temp.setNext(curr);
-    return curr.getData();
-  }
-
-  public void sort() {
-    if (this.size() > 1) {
-      for (int i = 0; i < this.size(); i++) {
-        Node<E> pre = null;
-        Node<E> curr = head;
-        for (int j = 0; j < this.size() - i; j++) { //4
-          if (curr.getNext() == null) {
-            break;
-          }
-          boolean swap = false;
-          if ((int) curr.getData() > (int) curr.getNext().getData()) {
-            swapE(pre, curr);
-            swap = true;
-          }
-          if (!swap) {
-            pre = curr;
-            curr = curr.getNext();
-          } else {
-            if (pre != null) {
-              pre = pre.getNext();
-            } else {
-              pre = head;
-            }
-          }
+  public E addSortedList(E item) {
+    if (head == null || (int) item < (int) head.getData()) {
+      head = new Node<E>(item, head);
+      numNode++;
+    } else {
+      Node<E> tmp = head;
+      Node<E> prev = head;
+      while (tmp != null) {
+        if ((int) tmp.getData() > (int) item) {
+          Node<E> newNode = new Node<E>(item, tmp);
+          prev.setNext(newNode);
+          numNode++;
+          break;
         }
+        prev = tmp;
+        if (tmp.getNext() == null) {
+          Node<E> newNode = new Node<E>(item, null);
+          tmp.setNext(newNode);
+          numNode++;
+          break;
+        }
+        tmp = tmp.getNext();
       }
     }
+    return this.getFirst();
+  }
+
+  public int Sum() {
+    if (this.isEmpty()) {
+      System.out.println("Can't remove element from an empty list");
+    } else {
+      Node<E> tmp = this.head;
+      int sum = 0;
+      while (tmp != null) {
+        sum += (int) tmp.getData();
+        tmp = tmp.getNext();
+      }
+      return sum;
+    }
+    return 0;
   }
 }
